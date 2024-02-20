@@ -1,0 +1,32 @@
+# Terragrunt files
+.terragrunt-cache/
+terraform.tfstate*
+terraform.tfvars*
+
+# Terraform / Terragrunt
+*tfstate*
+*.tfplan
+*.plan.json
+.terra*
+!.terraform.lock.hcl
+output.json
+
+# Local development files
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# IDE files
+.vscode/
+*.idea/
+
+# Log files
+*.log
+*.out
+*.err
+
+# Other files
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
