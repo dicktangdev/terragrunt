@@ -1,0 +1,47 @@
+apiVersion: karpenter.sh/v1alpha5
+kind: Provisioner
+metadata:
+  name: karpenter-on-demand-staging
+spec:
+  kubeletConfiguration:
+    maxPods: 40
+  providerRef:
+    name: default
+  labels:
+    capacityType: "ON_DEMAND"
+    environment: "staging"
+  limits:
+    resources:
+      cpu: 200
+      memory: 800Gi
+  # provider:
+  #   apiVersion: extensions.karpenter.sh/v1alpha1
+  #   kind: AWS
+  #   securityGroupSelector:
+  #     karpenter.sh/discovery: ${cluster_name}
+  #   subnetSelector:
+  #     karpenter.sh/discovery: ${cluster_name}
+  requirements:
+  - key: "karpenter.k8s.aws/instance-category"
+    operator: In
+    values: ["c", "m", "r"]
+  - key: "karpenter.k8s.aws/instance-cpu"
+    operator: In
+    values: ["2","4", "8", "16", "32"]
+  - key: karpenter.k8s.aws/instance-generation
+    operator: Gt
+    values: ["2"]
+  - key: "topology.kubernetes.io/zone"
+    operator: In
+    values: ["ap-east-1a", "ap-east-1b", "ap-east-1c"]
+  - key: karpenter.sh/capacity-type
+    operator: In
+    values:
+    - on-demand
+  - key: kubernetes.io/arch
+    operator: In
+    values:
+    - amd64
+  # ttlSecondsAfterEmpty: 30
+  consolidation:
+    enabled: true
